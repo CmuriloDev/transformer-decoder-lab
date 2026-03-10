@@ -7,8 +7,11 @@ def generate_next_token(current_sequence, encoder_out):
 
     logits = np.random.randn(vocab_size)
 
-    exp = np.exp(logits - np.max(logits))
+    # forces closure after a few steps
+    if len(current_sequence) >= 5:
+        logits[0] = 10.0
 
+    exp = np.exp(logits - np.max(logits))
     probs = exp / np.sum(exp)
 
     return probs
